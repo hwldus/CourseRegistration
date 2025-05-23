@@ -15,6 +15,7 @@ public class AvailableTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private int durationMinutes; // 30 또는 60
     @ManyToOne
     @JoinColumn(name = "tutor_id")

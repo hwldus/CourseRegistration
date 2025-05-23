@@ -8,5 +8,8 @@ import java.util.List;
 
 public interface AvailableTimeRepository extends JpaRepository<AvailableTime, Long> {
     List<AvailableTime> findByTutorId(Long tutorId); //튜터의 가능한 시간 목록 조회
+    boolean existsByTutorIdAndStartTimeLessThanAndEndTimeGreaterThan(
+            Long tutorId, LocalDateTime newEndTime, LocalDateTime newStartTime
+    );
     boolean existsByTutorIdAndStartTime(Long tutorId, LocalDateTime startTime);
 }

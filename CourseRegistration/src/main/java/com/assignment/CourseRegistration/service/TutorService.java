@@ -27,11 +27,14 @@ public class TutorService {
         }
         Tutor tutor = tutorRepository.findById(tutorId)
                 .orElseThrow(() -> new IllegalArgumentException("튜터가 존재하지 않습니다."));
-        boolean alreadyExists = availableTimeRepository.existsByTutorIdAndStartTime(tutorId, startTime);
-        if(alreadyExists)
+        LocalDateTime endTime = startTime.plusMinutes(durationMinutes);
+        boolean overlap = availableTimeRepository.existsByTutorIdAndStartTimeLessThanAndEndTimeGreaterThan(tutorId, endTime, startTime);
+        boolean sameStart = availableTimeRepository.existsByTutorIdAndStartTime(tutorId, startTime);
+        if(overlap || sameStart)
             throw new IllegalArgumentException("해당 튜터는 이미 이 시간에 수업이 등록되어 있습니다.");
         AvailableTime availableTime = AvailableTime.builder()
                 .startTime(startTime)
+                .endTime(endTime)
                 .durationMinutes(durationMinutes)
                 .tutor(tutor)
                 .build();
