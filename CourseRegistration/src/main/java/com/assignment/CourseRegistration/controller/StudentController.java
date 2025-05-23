@@ -1,16 +1,14 @@
 package com.assignment.CourseRegistration.controller;
 
 import com.assignment.CourseRegistration.dto.AvailableTimeResponseDTO;
+import com.assignment.CourseRegistration.dto.RegistrationRequestDTO;
 import com.assignment.CourseRegistration.dto.TutorResponseDTO;
 import com.assignment.CourseRegistration.model.AvailableTime;
 import com.assignment.CourseRegistration.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,5 +37,11 @@ public class StudentController {
                                                                      @RequestParam("duration") int durationMinutes) {
         List<TutorResponseDTO> tutors = studentService.getAvailableTutors(startTime, endTime, durationMinutes);
         return ResponseEntity.ok(tutors);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> createClass(@RequestBody RegistrationRequestDTO requestDTO) {
+        studentService.createClass(requestDTO);
+        return ResponseEntity.ok("수강신청되었습니다.");
     }
 }
