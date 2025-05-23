@@ -1,6 +1,7 @@
 package com.assignment.CourseRegistration.controller;
 
 import com.assignment.CourseRegistration.dto.AvailableTimeResponseDTO;
+import com.assignment.CourseRegistration.dto.TutorResponseDTO;
 import com.assignment.CourseRegistration.model.AvailableTime;
 import com.assignment.CourseRegistration.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,13 @@ public class StudentController {
                 .map(AvailableTimeResponseDTO::fromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/availableTutors")
+    public ResponseEntity<List<TutorResponseDTO>> getAvailableTutors(@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+                                                                     @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+                                                                     @RequestParam("duration") int durationMinutes) {
+        List<TutorResponseDTO> tutors = studentService.getAvailableTutors(startTime, endTime, durationMinutes);
+        return ResponseEntity.ok(tutors);
     }
 }

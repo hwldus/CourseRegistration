@@ -1,5 +1,6 @@
 package com.assignment.CourseRegistration.service;
 
+import com.assignment.CourseRegistration.dto.TutorResponseDTO;
 import com.assignment.CourseRegistration.model.AvailableTime;
 import com.assignment.CourseRegistration.repository.AvailableTimeRepository;
 import com.assignment.CourseRegistration.repository.ClassRegistrationRepository;
@@ -20,6 +21,16 @@ public class StudentService {
         List<AvailableTime> list = availableTimeRepository.findByStartTimeBetweenAndDurationMinutes(startTime, endTime, durationMinutes);
         return list.stream()
                 .filter(time -> !classRegistrationRepository.existsByAvailableTime(time))
+                .collect(Collectors.toList());
+    }
+
+    public List<TutorResponseDTO> getAvailableTutors(LocalDateTime startTime, LocalDateTime endTime, int durationMinutes) {
+        List<AvailableTime> list = availableTimeRepository.findByStartTimeBetweenAndDurationMinutes(startTime, endTime, durationMinutes);
+        return list.stream()
+                .filter(time -> !classRegistrationRepository.existsByAvailableTime(time))
+                .map(AvailableTime::getTutor)
+                .distinct()
+                .map(TutorResponseDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 }
