@@ -19,5 +19,5 @@ public class ClassRegistration {
 
     @ManyToOne
     @JoinColumn(name = "available_time_id")
-    private AvailableTime time;
+    private AvailableTime availableTime;
 }
