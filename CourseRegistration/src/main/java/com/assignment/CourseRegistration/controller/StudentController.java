@@ -2,6 +2,7 @@ package com.assignment.CourseRegistration.controller;
 
 import com.assignment.CourseRegistration.dto.AvailableTimeResponseDTO;
 import com.assignment.CourseRegistration.dto.RegistrationRequestDTO;
+import com.assignment.CourseRegistration.dto.RegistrationResponseDTO;
 import com.assignment.CourseRegistration.dto.TutorResponseDTO;
 import com.assignment.CourseRegistration.model.AvailableTime;
 import com.assignment.CourseRegistration.service.StudentService;
@@ -43,5 +44,10 @@ public class StudentController {
     public ResponseEntity<String> createClass(@RequestBody RegistrationRequestDTO requestDTO) {
         studentService.createClass(requestDTO);
         return ResponseEntity.ok("수강신청되었습니다.");
+    }
+
+    @GetMapping("/classes")
+    public ResponseEntity<List<RegistrationResponseDTO>> getRegisteredClasses(@RequestParam Long studentId) {
+        return ResponseEntity.ok(studentService.getRegistration(studentId));
     }
 }

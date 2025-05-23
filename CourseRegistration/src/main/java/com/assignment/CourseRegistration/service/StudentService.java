@@ -1,6 +1,7 @@
 package com.assignment.CourseRegistration.service;
 
 import com.assignment.CourseRegistration.dto.RegistrationRequestDTO;
+import com.assignment.CourseRegistration.dto.RegistrationResponseDTO;
 import com.assignment.CourseRegistration.dto.TutorResponseDTO;
 import com.assignment.CourseRegistration.model.AvailableTime;
 import com.assignment.CourseRegistration.model.ClassRegistration;
@@ -59,5 +60,14 @@ public class StudentService {
                 .availableTime(time)
                 .build();
         return classRegistrationRepository.save(registration);
+    }
+
+    public List<RegistrationResponseDTO> getRegistration(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("학생이 존재하지 않습니다."));
+        List<ClassRegistration> registrations = classRegistrationRepository.findByStudent(student);
+        return registrations.stream()
+                .map(RegistrationResponseDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 }
